@@ -99,6 +99,13 @@ public class Main {
 
     }
 
+    /**
+     *
+     * @param min parametrized minimum value
+     * @param max parametrized maximum value
+     * @param increment
+     * @param <T> int, double, long, byte, float
+     */
     private static <T extends Number> void getMultitask(T min, T max, T increment) {
         // Преобразуем значения к double для универсальности
         double minVal = min.doubleValue();

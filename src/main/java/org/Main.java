@@ -107,18 +107,18 @@ public class Main {
      * @param <T> int, double, long, byte, float
      */
     private static <T extends Number> void getMultitask(T min, T max, T increment) {
-        // Преобразуем значения к double для универсальности
+        // Convert values to double for universatility
         double minVal = min.doubleValue();
         double maxVal = max.doubleValue();
         double incrementVal = increment.doubleValue();
 
-        // Проверка на валидность increment
+        // check the valid increment
         if (incrementVal <= 0) {
             throw new IllegalArgumentException("Increment must be a positive number");
         }
 
         int steps = (int) ((maxVal - minVal) / incrementVal);
-        // Цикл с использованием double
+        // ;oop with double value
         for (int step = 0; step <= steps; step++) {
             double i = minVal + step * incrementVal;
             for (int innerStep = 0; innerStep <= steps; innerStep++) {

@@ -118,12 +118,12 @@ public class Main {
         }
 
         int steps = (int) ((maxVal - minVal) / incrementVal);
-        // ;oop with double value
+        // Loop with double value
         for (int step = 0; step <= steps; step++) {
             double i = minVal + step * incrementVal;
             for (int innerStep = 0; innerStep <= steps; innerStep++) {
                 double j = minVal + innerStep * incrementVal;
-                System.out.printf("%10.6f", i * j); // Форматирование для чисел с плавающей точкой
+                System.out.printf("%10.6f", i * j); // Formatting for value with floating point
             }
             System.out.println();
         }

@@ -7,6 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
+    public enum NumberType{
+        INT,
+        DOUBLE,
+        FLOAT,
+        BYTE,
+        LONG
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
@@ -24,86 +32,106 @@ public class Main {
             return;
         }
         String stringIncrement = String.valueOf(properties.getProperty("increment"));
-        String numberType = (args.length > 0) ? args[0].toLowerCase() : "int";
+        NumberType numberType = (args.length > 0) ? NumberType.valueOf(args[0].toUpperCase()) : NumberType.INT; // default value
 
-            switch (numberType){
-                case "double":
-                    try {
-                        double doubleIncrement = Double.parseDouble(properties.getProperty("increment"));
-                        double minDouble = Double.parseDouble(properties.getProperty("min"));
-                        double maxDouble = Double.parseDouble(properties.getProperty("max"));
-                        if (validateValues(minDouble, maxDouble, doubleIncrement)) {
-                            setLog(minDouble, maxDouble, stringIncrement, numberType);
-                            getMultitask(minDouble, maxDouble, doubleIncrement);
-                        }
-                    } catch (NumberFormatException e){
-                        logger.error("NumberFormatException: incorrect format double");
-                }
-                    break;
-                case "long":
-                    try {
-                        long longIncrement = Long.parseLong(properties.getProperty("increment"));
-                        long minLong = Long.parseLong(properties.getProperty("min"));
-                        long maxLong = Long.parseLong(properties.getProperty("max"));
-                        if (validateValues(minLong, maxLong, longIncrement)) {
-                            setLog(minLong, maxLong, stringIncrement, numberType);
-                            getMultitask(minLong, maxLong, longIncrement);
-                        }
-                    } catch (NumberFormatException e){
-                        logger.error("NumberFormatException: incorrect format long");
-                    }
-                    break;
-                case "byte":
-                    try {
-                        byte byteIncrement = Byte.parseByte(properties.getProperty("increment"));
-                        byte minByte = Byte.parseByte(properties.getProperty("min"));
-                        byte maxByte = Byte.parseByte(properties.getProperty("max"));
-                        if (validateValues(minByte, maxByte, byteIncrement)) {
-                            setLog(minByte, maxByte, stringIncrement, numberType);
-                            getMultitask(minByte, maxByte, byteIncrement);
-                        }
-                    } catch (NumberFormatException e) {
-                       logger.error("NumberFormatException: incorrect format byte");
-                }
-                    break;
-                case "int":
-                    try {
-                        int intIncrement = Integer.parseInt(properties.getProperty("increment"));
-                        int min = Integer.parseInt(properties.getProperty("min"));
-                        int max = Integer.parseInt((properties.getProperty("max")));
-                        if (validateValues(min, max, intIncrement)) {
-                            setLog(min, max, stringIncrement, numberType);
-                            getMultitask(min, max, intIncrement);
-                        }
-                    } catch(NumberFormatException e){
-                        logger.error("NumberFormatException: incorrect format int");
-                    }
-                    break;
-                case "float":
-                    try {
-                        float floatIncrement = Float.parseFloat(properties.getProperty("increment"));
-                        float floatMin = Float.parseFloat(properties.getProperty("min"));
-                        float floatMax = Float.parseFloat((properties.getProperty("max")));
-                        if (validateValues(floatMin, floatMax, floatIncrement)) {
-                            setLog(floatMin, floatMax, stringIncrement, numberType);
-                            getMultitask(floatMin, floatMax, floatIncrement);
-                        }
-                    } catch (NumberFormatException e){
-                        logger.error("NumberFormatException: incorrect format float");
-                    }
-                    break;
-                default:
-                    logger.error("Number type is not supported: {}", numberType);
-                    break;
-            }
+        switch (numberType){
+            case INT:
+                processInt(properties, stringIncrement);
+                break;
+            case DOUBLE:
+                processDouble(properties, stringIncrement);
+                break;
+            case FLOAT:
+                processFloat(properties, stringIncrement);
+                break;
+            case LONG:
+                processLong(properties, stringIncrement);
+                break;
+            case BYTE:
+                processByte(properties, stringIncrement);
+                break;
+            default:
+                logger.error("Number type is not supported: {}", numberType);
+                break;
+        }
 
     }
 
+    private static void processByte(Properties properties, String stringIncrement) {
+        try {
+            byte byteIncrement = Byte.parseByte(properties.getProperty("increment"));
+            byte min = Byte.parseByte(properties.getProperty("min"));
+            byte max = Byte.parseByte((properties.getProperty("max")));
+            if (validateValues(min, max, byteIncrement)) {
+                setLog(min, max, stringIncrement, String.valueOf(NumberType.BYTE));
+                getMultitask(min, max, byteIncrement);
+            }
+        } catch(NumberFormatException e){
+            logger.error("NumberFormatException: incorrect format double");
+        }
+    }
+
+    private static void processLong(Properties properties, String stringIncrement) {
+        try {
+            long longIncrement = Long.parseLong(properties.getProperty("increment"));
+            long min = Long.parseLong(properties.getProperty("min"));
+            long max = Long.parseLong((properties.getProperty("max")));
+            if (validateValues(min, max, longIncrement)) {
+                setLog(min, max, stringIncrement, String.valueOf(NumberType.LONG));
+                getMultitask(min, max, longIncrement);
+            }
+        } catch(NumberFormatException e){
+            logger.error("NumberFormatException: incorrect format long");
+        }
+    }
+
+    private static void processFloat(Properties properties, String stringIncrement) {
+        try {
+            float floatIncrement = Float.parseFloat(properties.getProperty("increment"));
+            float min = Float.parseFloat(properties.getProperty("min"));
+            float max = Float.parseFloat((properties.getProperty("max")));
+            if (validateValues(min, max, floatIncrement)) {
+                setLog(min, max, stringIncrement, String.valueOf(NumberType.FLOAT));
+                getMultitask(min, max, floatIncrement);
+            }
+        } catch(NumberFormatException e){
+            logger.error("NumberFormatException: incorrect format float");
+        }
+    }
+
+    private static void processDouble(Properties properties, String stringIncrement) {
+        try {
+            double doubleIncrement = Double.parseDouble(properties.getProperty("increment"));
+            double min = Double.parseDouble(properties.getProperty("min"));
+            double max = Integer.parseInt((properties.getProperty("max")));
+            if (validateValues(min, max, doubleIncrement)) {
+                setLog(min, max, stringIncrement, String.valueOf(NumberType.DOUBLE));
+                getMultitask(min, max, doubleIncrement);
+            }
+        } catch(NumberFormatException e){
+            logger.error("NumberFormatException: incorrect format double");
+        }
+    }
+
+    private static void processInt(Properties properties, String stringIncrement) {
+        try {
+            int intIncrement = Integer.parseInt(properties.getProperty("increment"));
+            int min = Integer.parseInt(properties.getProperty("min"));
+            int max = Integer.parseInt((properties.getProperty("max")));
+            if (validateValues(min, max, intIncrement)) {
+                setLog(min, max, stringIncrement, String.valueOf(NumberType.INT));
+                getMultitask(min, max, intIncrement);
+            }
+        } catch(NumberFormatException e){
+            logger.error("NumberFormatException: incorrect format int");
+        }
+    }
+
     /**
-     *
+     * Method for view multitable on screen
      * @param min parametrized minimum value
      * @param max parametrized maximum value
-     * @param increment
+     * @param increment step for multiplication
      * @param <T> int, double, long, byte, float
      */
     private static <T extends Number> void getMultitask(T min, T max, T increment) {
